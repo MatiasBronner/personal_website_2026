@@ -137,6 +137,8 @@ function Portrait() {
           src="/images/my_portrait.png"
           alt="Matias Bronner"
           fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+
           className="object-cover object-top"
         />
 
