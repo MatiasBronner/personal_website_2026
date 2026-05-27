@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── Fonts ─────────────────────────────────── */
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-body:    "Inter", system-ui, sans-serif;
+
+  /* ── BOISE theme (hero + about) ────────────── */
+  --color-boise-amber: #D97706;
+  --color-boise-cream: #FDF6E3;
+  --color-boise-sage:  #4A6741;
+  --color-boise-clay:  #8B6B52;
+  --color-boise-night: #1A1208;
+  --color-boise-smoke: #F5EDD8;
+
+  /* ── DRUMS theme (experience) ──────────────── */
+  --color-drums-black:  #0A0A0A;
+  --color-drums-gold:   #C9882A;
+  --color-drums-red:    #8B1A1A;
+  --color-drums-paper:  #F0EAE0;
+  --color-drums-dim:    #1E1A18;
+
+  /* ── BIKING theme (projects) ───────────────── */
+  --color-bike-sky:     #E8F4FD;
+  --color-bike-trail:   #D4824A;
+  --color-bike-forest:  #2C4A3E;
+  --color-bike-stone:   #6B7280;
+  --color-bike-dark:    #111827;
+
+  /* ── BROWN theme (skills) ──────────────────── */
+  --color-brown-crimson: #4E1A1A;
+  --color-brown-gold:    #C09B5A;
+  --color-brown-cream:   #FAF7F2;
+  --color-brown-warm:    #2D1F1F;
+  --color-brown-muted:   #8B7355;
+
+  /* ── Animations ────────────────────────────── */
+  --animate-fade-up:     fade-up 0.9s ease forwards;
+  --animate-fade-in:     fade-in 0.6s ease forwards;
+  --animate-slide-right: slide-right 0.7s ease forwards;
+
+  @keyframes fade-up {
+    0%   { opacity: 0; transform: translateY(32px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-in {
+    0%   { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  @keyframes slide-right {
+    0%   { opacity: 0; transform: translateX(-24px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 0.4; }
+    50%       { opacity: 0.8; }
+  }
+  @keyframes bounce-subtle {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(6px); }
+  }
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+
+  /* thin amber scrollbar */
+  ::-webkit-scrollbar       { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #D97706; border-radius: 2px; }
+
+  /* section transitions — each section snaps to full viewport */
+  section {
+    scroll-snap-align: start;
+  }
+}
+
+@layer utilities {
+  .font-display { font-family: var(--font-display); }
+  .font-body    { font-family: var(--font-body); }
+
+  .animate-pulse-slow    { animation: pulse-slow 2.5s ease infinite; }
+  .animate-bounce-subtle { animation: bounce-subtle 1.8s ease infinite; }
+}
