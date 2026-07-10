@@ -373,23 +373,23 @@ export default function ExperienceSection() {
             <ExpCard
               period="May 2026 — Aug 2026"
               isCurrent
-              role="SSD AI Telemetry Intern"
+              role="AI/ML Engineer Intern, SSD"
               company="Micron Technology"
               location="Boise, ID"
-              focus="AI systems + hardware reliability"
+              focus="Agentic AI + firmware reliability"
               logoSrc="/images/logos/micron.png"
               logoAlt="Micron Technology logo"
               delay={100}
               bullets={[
-                "Exploring agentic AI for SSD testing and reliability workflows, with a focus on automating test development and improving engineering feedback loops.",
-                "Developing AI telemetry tooling for SSD data analysis, supporting <strong>anomaly detection</strong>, reliability insights, and debugging workflows.",
+                "Building an <strong>agentic AI system</strong> that performs automated <strong>root-cause analysis</strong> of new firmware bugs, improving diagnostic accuracy by <strong>15%+</strong> over the existing baseline.",
+                "Developed an <strong>LLM-powered</strong> tool that turns natural-language requests into firmware telemetry plots, letting engineers explore and visualize data without manual scripting.",
               ]}
               tags={[
                 "Python",
                 "Agentic AI",
+                "LLMs",
+                "Root-Cause Analysis",
                 "Machine Learning",
-                "Telemetry",
-                "Reliability",
               ]}
             />
 
