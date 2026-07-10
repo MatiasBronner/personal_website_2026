@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useLayoutEffect } from "react";
+
 import { motion, AnimatePresence, useAnimationControls } from "framer-motion";
 import { useReveal } from "@/hooks/useReveal";
+const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -204,6 +206,26 @@ function RecordModal({ project, originRect, onClose }: ModalProps) {
 
   const vw = typeof window !== "undefined" ? window.innerWidth : 800;
   const vh = typeof window !== "undefined" ? window.innerHeight : 600;
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [openShiftY, setOpenShiftY] = useState(0);
+  const cardMaxVH = 0.80;
+
+
+useIsoLayoutEffect(() => {
+  if (!project || !cardRef.current) return;
+  const h = cardRef.current.offsetHeight;
+
+  const centerMaxH = vh * 0.38;
+  const capH       = vh * cardMaxVH;   // was vh * 0.62 — now matches this card's real cap
+  const shiftMax   = vh * 0.30;
+
+  let t = (h - centerMaxH) / (capH - centerMaxH);
+  t = Math.min(Math.max(t, 0), 1);
+
+  const desired   = t * shiftMax;
+  const safeShift = Math.max(0, vh / 2 - h / 2 - 16); // keep the bottom on-screen
+  setOpenShiftY(Math.min(desired, safeShift));
+}, [project, vh, cardMaxVH]);
 
   const originX = originRect ? originRect.left + originRect.width / 2 : vw / 2;
   const originY = originRect ? originRect.top + originRect.height / 2 : vh / 2;
@@ -253,7 +275,7 @@ function RecordModal({ project, originRect, onClose }: ModalProps) {
 
       // Move down into the final readable front position.
       await controls.start({
-        y: "-18%",
+        y: project?.id === "medical" ? "2%" : "-18%",
         scale: 1,
         opacity: 1,
         transition: {
@@ -336,7 +358,7 @@ function RecordModal({ project, originRect, onClose }: ModalProps) {
                 pointerEvents: "all",
               }}
               initial={{ opacity: 0, scale: 0.22, x: offsetX, y: offsetY }}
-              animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+              animate={{ opacity: 1, scale: 1, x: 0, y: openShiftY }}
               exit={{ opacity: 0, scale: 0.22, x: offsetX, y: offsetY }}
               transition={{
                 type: "spring",
@@ -368,10 +390,12 @@ function RecordModal({ project, originRect, onClose }: ModalProps) {
                   }}
                 >
                   <motion.div
+                    ref={cardRef}
                     className="absolute left-[4%] right-[4%] rounded-sm"
                     style={{
                       bottom: "3%",
-                      height: "52%",
+                      height: "auto",
+                      maxHeight: `${cardMaxVH * 100}vh`,
                       background:
                         "linear-gradient(180deg, #181514 0%, #11100F 100%)",
                       border: "1px solid rgba(201,136,42,0.26)",
@@ -413,7 +437,7 @@ function RecordModal({ project, originRect, onClose }: ModalProps) {
                       ✕
                     </button>
 
-                    <div className="h-full overflow-y-auto">
+                    <div className="min-h-0 overflow-y-auto">
                       <div className="p-5 md:p-6 pb-8">
                         <div className="flex items-start gap-4 mb-4 pr-7">
                           <div
@@ -687,6 +711,7 @@ function AlbumCard({ project, delay = 0, onOpen }: {
 }) {
   const { ref, isVisible } = useReveal({ delay });
   const [hovered, setHovered] = useState(false);
+  
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     onOpen(project, e.currentTarget.getBoundingClientRect());
